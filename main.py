@@ -1,5 +1,7 @@
 import math
+import numpy as np
 from graphviz import Digraph
+import matplotlib.pyplot as plt
 
 # derived from Andrej Karpathy's NN class
 class Value:
@@ -97,15 +99,36 @@ def drawDot(root):
   dot.render(directory='charts', view=True) 
   return dot
 
-# test draw dot method
-a = Value(2.0, label='a')
-b = Value(-3.0, label='b')
-c = Value(10.0, label='c')
-e = a*b; e.label = 'e'
-d = e + c; d.label = 'd'
-f = Value(-2.0, label='f')
-L = d * f; L.label = 'L'
-L
+print("hereee")
+# visualize tanh activation function 
+xs = np.arange(-10, 10, .25)
+ys = np.tanh(xs)
 
-# chart should open in browser
-drawDot(L)
+plt.plot(xs, ys)
+plt.title("Tanh Activation Function")
+
+
+
+# CREATE SINGLE NEURON
+# inputs x1,x2
+x1 = Value(2.0, label='x1')
+x2 = Value(0.0, label='x2')
+# weights w1,w2
+w1 = Value(-3.0, label='w1')
+w2 = Value(1.0, label='w2')
+# bias of the neuron
+b = Value(6.8813735870195432, label='b')
+# x1*w1 + x2*w2 + b
+x1w1 = x1*w1; x1w1.label = 'x1*w1'
+x2w2 = x2*w2; x2w2.label = 'x2*w2'
+x1w1x2w2 = x1w1 + x2w2; x1w1x2w2.label = 'x1*w1 + x2*w2'
+n = x1w1x2w2 + b; n.label = 'n'
+# run activation function
+o = n.tanh(); o.label = 'o'
+
+
+plt.show()
+# run backward propogation
+o.backward()
+drawDot(o)
+
